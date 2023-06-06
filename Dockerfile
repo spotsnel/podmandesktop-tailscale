@@ -16,7 +16,7 @@ RUN mkdir /tmp/extension \
 
 FROM scratch
 
-LABEL org.opencontainers.image.title="Tailscale extension for Podman Desktop" \
+LABEL org.opencontainers.image.title="Tailscale" \
       org.opencontainers.image.description="Lets you securely connect to your containers without exposing them to the public internet" \
       org.opencontainers.image.vendor="gbraad" \
       io.podman-desktop.api.version=">= 0.16.0"

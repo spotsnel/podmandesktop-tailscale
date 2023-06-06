@@ -1,0 +1,15 @@
+tasks:
+  - init: yarn install && yarn run build
+    command: yarn run watch
+  - name: tailscale
+    command: |
+      cd /tmp
+      wget https://pkgs.tailscale.com/stable/tailscale_1.42.0_amd64.tgz
+      tar zxvf tailscale_1.42.0_amd64.tgz
+      sudo mv tailscale_*/tailscale{,d} /usr/sbin/
+      sudo tailscaled --state=/var/lib/tailscale/tailscaled.state --socket=/run/tailscale/tailscaled.sock --port 41641 2>/dev/null &
+      sudo tailscale up --authkey=${TAILSCALE_AUTHKEY} --operator=gitpod --netfilter-mode=off --ssh
+
+vscode:
+  extensions:
+    - tailscale.vscode-tailscale

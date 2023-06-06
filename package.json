@@ -1,0 +1,48 @@
+{
+  "publisher": "gbraad",
+  "name": "tailscale-extension",
+  "displayName": "Tailscale",
+  "description": "Lets you securely connect to your containers without exposing them to the public internet",
+  "version": "0.0.1",
+  "icon": "icon.png",
+  "license": "Apache-2.0",
+  "engines": {
+    "podman-desktop": "^0.16.0"
+  },
+  "main": "./dist/extension.js",
+  "source": "./src/extension.ts",
+  "contributes": {
+    "configuration": {
+      "title": "Tailscale"
+    }
+  },
+  "scripts": {
+    "build": "rollup --bundleConfigAsCjs --config rollup.config.js --compact --environment BUILD:production",
+    "watch": "rollup --bundleConfigAsCjs --config rollup.config.js -w",
+    "lint:check": "eslint . --ext js,ts",
+    "lint:fix": "eslint . --fix --ext js,ts",
+    "format:check": "prettier --check src/**",
+    "format:fix": "prettier --write src/**",
+    "desk:build": "ts-node-esm ./scripts/run.mts build",
+    "desk:prepare": "ts-node-esm ./scripts/run.mts prepare",
+    "desk:run": "ts-node-esm ./scripts/run.mts run"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@podman-desktop/api": "next",
+    "@rollup/plugin-commonjs": "^24.0.1",
+    "@rollup/plugin-json": "^6.0.0",
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "@rollup/plugin-typescript": "^11.0.0",
+    "@types/node": "^18.14.6",
+    "@typescript-eslint/eslint-plugin": "^5.55.0",
+    "@typescript-eslint/parser": "^5.55.0",
+    "compare-versions": "^6.0.0-rc.1",
+    "eslint": "^8.36.0",
+    "prettier": "^2.8.4",
+    "rollup": "^3.18.0",
+    "ts-node": "^10.9.1",
+    "tslib": "^2.5.0",
+    "typescript": "^4.9.5"
+  }
+}

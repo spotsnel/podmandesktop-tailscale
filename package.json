@@ -1,9 +1,9 @@
 {
-  "publisher": "gbraad",
+  "publisher": "SpotSnel",
   "name": "tailscale-extension",
   "displayName": "Tailscale",
   "description": "Lets you securely connect to your containers without exposing them to the public internet",
-  "version": "0.0.1",
+  "version": "0.0.5",
   "icon": "icon.png",
   "license": "Apache-2.0",
   "engines": {

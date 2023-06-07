@@ -3,7 +3,7 @@ import { exec } from './util';
 import { BackendState, StatusResponse, TailscaleUpResponse } from './types'
 
 const containerName = 'tailscale-system';
-const containerImage = 'ghcr.io/spotsnel/tailscale-systemd:latest';
+const containerImage = 'ghcr.io/spotsnel/tailscale-systemd/ubi9:latest';
 
 export async function activate(extensionContext: podmanDesktopAPI.ExtensionContext): Promise<void> {
   console.log('Activating Tailscale extension');

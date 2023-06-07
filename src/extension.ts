@@ -1,6 +1,6 @@
 import * as podmanDesktopAPI from '@podman-desktop/api';
 import { exec } from './util';
-import { BackendState, StatusResponse, TailscaleUpResponse } from './types'
+import { BackendState, StatusResponse, TailscaleUpResponse } from './types';
 
 const containerName = 'tailscale-system';
 const containerImage = 'ghcr.io/spotsnel/tailscale-systemd/ubi9:latest';
@@ -35,12 +35,12 @@ export async function activate(extensionContext: podmanDesktopAPI.ExtensionConte
     }
   }
 
-  const statusResponse = await getTailscaleStatus()
-  const [status, rawStatus] = statusResponse
+  const statusResponse = await getTailscaleStatus();
+  const [status, rawStatus] = statusResponse;
 
   // check registration status
   // if not registered => "BackendState": "NeedsLogin"
-  if (status.BackendState === "NeedsLogin") {
+  if (status.BackendState === 'NeedsLogin') {
     // no markdown description
     //const upResponse = await getTailscaleUp()
 
@@ -62,11 +62,11 @@ export function deactivate(): void {
 }
 
 async function getTailscaleStatus(): Promise<[StatusResponse, string]> {
-  const status = await (await exec('podman', ['exec', containerName, 'tailscale status --json']))
-  return [JSON.parse(status.stdOut), status.stdOut]
+  const status = await exec('podman', ['exec', containerName, 'tailscale status --json']);
+  return [JSON.parse(status.stdOut), status.stdOut];
 }
 
 async function getTailscaleUp(): Promise<[TailscaleUpResponse, string]> {
-  const up = await (await exec('podman', ['exec', containerName, 'tailscale up --reset --force-reauth --json']))
-  return [JSON.parse(up.stdOut), up.stdOut]
+  const up = await exec('podman', ['exec', containerName, 'tailscale up --reset --force-reauth --json']);
+  return [JSON.parse(up.stdOut), up.stdOut];
 }

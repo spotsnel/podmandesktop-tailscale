@@ -41,11 +41,15 @@ export async function activate(extensionContext: podmanDesktopAPI.ExtensionConte
   // check registration status
   // if not registered => "BackendState": "NeedsLogin"
   if (status.BackendState === 'NeedsLogin') {
-    // no markdown description
-    //const upResponse = await getTailscaleUp()
+    // get the authurl but ignore the response
+    await getTailscaleUp()
+    // now AUthURL is filled in status
+    const loginstatusResponse = await getTailscaleStatus();
+    const [loginstatus, rawloginStatus] = loginstatusResponse;
 
+    // no markdown description so no QR
     await podmanDesktopAPI.window.showInformationMessage(
-      'Please register node to your tailnet\n\n' + status.AuthURL,
+      'Please register node to your tailnet\n\n' + loginstatus.AuthURL,
       'OK',
     );
   }
@@ -67,6 +71,6 @@ async function getTailscaleStatus(): Promise<[StatusResponse, string]> {
 }
 
 async function getTailscaleUp(): Promise<[TailscaleUpResponse, string]> {
-  const up = await exec('podman', ['exec', containerName, 'tailscale up --reset --force-reauth --json']);
+  const up = await exec('podman', ['exec', containerName, 'tailscale up --reset --force-reauth --json --timeout 1s']);
   return [JSON.parse(up.stdOut), up.stdOut];
 }

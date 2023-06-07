@@ -1,5 +1,6 @@
 import * as podmanDesktopAPI from '@podman-desktop/api';
 import { exec } from './util';
+import { BackendState, StatusResponse, TailscaleUpResponse } from './types'
 
 const containerName = 'tailscale-system';
 const containerImage = 'ghcr.io/spotsnel/tailscale-systemd:latest';
@@ -34,14 +35,20 @@ export async function activate(extensionContext: podmanDesktopAPI.ExtensionConte
     }
   }
 
-  const status = await (await exec('podman', ['exec', containerName, 'tailscale', 'status', '--json'])).stdOut;
+  const statusResponse = await getTailscaleStatus()
+  const [status, rawStatus] = statusResponse
+
   // check registration status
-  console.log(status);
-
   // if not registered => "BackendState": "NeedsLogin"
-  //   register
+  if (status.BackendState === "NeedsLogin") {
+    // no markdown description
+    //const upResponse = await getTailscaleUp()
 
-  // else, get status
+    await podmanDesktopAPI.window.showInformationMessage(
+      'Please register node to your tailnet\n\n' + status.AuthURL,
+      'OK',
+    );
+  }
 
   // set statusbar
   //const item = podmanDesktopAPI.window.createStatusBarItem(podmanDesktopAPI.StatusBarAlignRight, 100);
@@ -52,4 +59,14 @@ export async function activate(extensionContext: podmanDesktopAPI.ExtensionConte
 
 export function deactivate(): void {
   console.log('Deactivating Tailscale extension');
+}
+
+async function getTailscaleStatus(): Promise<[StatusResponse, string]> {
+  const status = await (await exec('podman', ['exec', containerName, 'tailscale status --json']))
+  return [JSON.parse(status.stdOut), status.stdOut]
+}
+
+async function getTailscaleUp(): Promise<[TailscaleUpResponse, string]> {
+  const up = await (await exec('podman', ['exec', containerName, 'tailscale up --reset --force-reauth --json']))
+  return [JSON.parse(up.stdOut), up.stdOut]
 }

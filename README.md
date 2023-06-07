@@ -1,10 +1,11 @@
-# Tailscale extension for Podman Desktop
+Tailscale extension for Podman Desktop
+======================================
 
-**WIP**
-
-![Logo](./icon.png)
+![Screenshot](./screenshot.png)
 
 Tailscale extension for Podman Desktop that lets you securely connect to your containers without exposing them to the public internet
+
+Currently only performs basic activation and authentication
 
 
 ### Dependencies
